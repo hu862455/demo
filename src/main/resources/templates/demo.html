@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+</head>
+<body>
+<!--head-->
+<!-- 引入代码片段并传入参数 -->
+<div th:replace="public-head :: public-head(companyName=${companyName})" ></div>
+<!--content-->
+<div><h1>学生列表：</h1></div>
+<!-- th:if 用法 -->
+<h2 th:if="${isManager} == false">您没有管理员权限</h2>
+<!-- th:unless 用法 + 多条件判断 -->
+<table th:unless="${#lists.isEmpty(studentList)} or ${isManager} == false">
+    <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>总数</th>
+        <th>偶数/奇数</th>
+        <th>第一个元素</th>
+        <th>最后一个元素</th>
+    </tr>
+<!--  th:each 使用  -->
+    <tr th:each="student,iterStat : ${studentList}">
+        <td th:text="${student.name}"></td>
+        <td th:text="${student.age}"></td>
+<!--        <td th:text="${student.gender == '1' ? '男' : '女'}">未知</td>-->
+<!--   th:block和th:switch语句的应用     -->
+        <th:block th:switch="${student.gender}">
+            <td th:case="'1'">男</td>
+            <td th:case="'2'">女</td>
+            <td th:case="*">未知</td>
+        </th:block>
+        <td th:text="${iterStat.size}">0</td>
+        <td th:text="${iterStat.even}? '偶数' : '奇数'"></td>
+        <td th:text="${iterStat.first}"></td>
+        <td th:text="${iterStat.last}"></td>
+    </tr>
+</table>
+<!-- th:utext 会解析html标签 -->
+<div th:utext="${htmlDiv}"></div>
+<div th:text="${htmlDiv}"></div>
+<!--foot-->
+<div th:replace="public-foot :: public-foot" ></div>
+</body>
+</html>
